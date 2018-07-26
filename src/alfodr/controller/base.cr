@@ -9,7 +9,7 @@ module Alfodr::Controller
     protected getter context : HTTP::Server::Context
     protected getter params : Alfodr::Validators::Params
 
-    delegate :logger, to: Alfodr.settings
+    delegate :logger, to: Alfodr
 
     delegate :client_ip,
       :delete?,

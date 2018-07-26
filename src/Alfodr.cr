@@ -18,7 +18,6 @@ require "./Alfodr/environment/**"
 
 # TODO: Write documentation for `Alfodr`
 module Alfodr
-  # TODO: Put your code here
   def self.logger
     Alfodr::Environment::Logger.new(STDOUT)
   end

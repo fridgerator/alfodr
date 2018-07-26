@@ -9,7 +9,7 @@ module Alfodr
       @skip : Params
       @context : Params
 
-      def initialize()
+      def initialize
         filter = [] of String
         if log_filter_env = ENV["ALFODR_LOG_FILTER"]?
           filter = log_filter_env.split(' ')
@@ -20,11 +20,9 @@ module Alfodr
           skip = log_skip_env.split(' ')
         end
 
-        context = [] of String
+        context = %w(request headers params)
         if log_context_env = ENV["ALFODR_LOG_CONTEXT"]?
           context = log_context_env.split(' ')
-        else
-          context = %w(request headers params)
         end
 
         @filter = filter
@@ -87,7 +85,7 @@ module Alfodr
       end
 
       private def log(msg, prog, color = :white)
-        Alfodr.logger.debug msg, prog, color
+        Alfodr.logger.info msg, prog, color
       end
     end
   end
