@@ -28,7 +28,6 @@ class HTTP::Server::Context
   {% end %}
 
   def format
-    # Alfodr::Support::MimeTypes.get_request_format(request)
     "application/json"
   end
 
@@ -58,6 +57,7 @@ class HTTP::Server::Context
   end
 
   protected def finalize_response
+    response.headers["Content-Type"] = "application/json"
     response.headers["Connection"] = "Keep-Alive"
     response.headers.add("Keep-Alive", "timeout=5, max=10000")
     response.print(@content) unless request.method == "HEAD"

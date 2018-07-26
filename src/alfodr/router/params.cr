@@ -11,10 +11,11 @@ module Alfodr::Router
 
   class Params
     TYPE_EXT_REGEX   = Alfodr::Support::MimeTypes::TYPE_EXT_REGEX
+    MULTIPART_FORM   = "multipart/form-data"
     APPLICATION_JSON = "application/json"
 
     @files = Types::Files.new
-    # @multipart : Types::Params?
+    @multipart : Types::Params?
     @json : Types::Params?
     # @form : HTTP::Params?
 
@@ -59,7 +60,7 @@ module Alfodr::Router
     end
 
     def override_method?(key : Types::Key)
-      query[key]?
+      query[key]? || multipart[key]?
     end
 
     def to_h : Types::Params
@@ -67,11 +68,19 @@ module Alfodr::Router
       query.each { |key, _| params_hash[key] = query[key] }
       route.each_key { |key| params_hash[key] = route[key] }
       json.each_key { |key| params_hash[key] = json[key].to_s }
+      multipart.each_key { |key| params_hash[key] = multipart[key].to_s }
       params_hash
     end
 
     private def query
       @request.query_params
+    end
+
+    private def multipart
+      return @multipart.not_nil! if @multipart
+      return Types::Params.new unless content_type?(MULTIPART_FORM)
+      @multipart, @files = Parsers::Multipart.parse(@request)
+      @multipart.not_nil!
     end
 
     private def json
