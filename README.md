@@ -1,6 +1,8 @@
 # Alfodr
 
-TODO: Write a description here
+My own hacked up version of amber, i.e. Amber for API's only.
+
+Dont use me, unless you want to, then go ahead
 
 ## Installation
 
@@ -8,14 +10,14 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  Alfodr:
-    github: your-github-user/Alfodr
+  alfodr:
+    github: fridgerator/alfodr
 ```
 
 ## Usage
 
 ```crystal
-require "Alfodr"
+require "alfodr"
 ```
 
 TODO: Write usage instructions here
@@ -26,7 +28,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/Alfodr/fork>)
+1. Fork it (<https://github.com/fridgerator/alfodr/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -34,4 +36,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [your-github-user](https://github.com/your-github-user) Nick Franken - creator, maintainer
+- [fridgerator](https://github.com/fridgerator) Nick Franken - creator, maintainer
