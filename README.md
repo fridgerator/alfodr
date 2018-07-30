@@ -2,7 +2,7 @@
 
 My own hacked up version of amber, i.e. Amber for API's only.
 
-Dont use me, unless you want to, then go ahead.
+Dont use this, unless you want to, then go ahead.
 
 Most of this pulled directly from [Amber](https://github.com/amberframework/amber), all credit goes to them.
 
