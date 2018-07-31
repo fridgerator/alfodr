@@ -54,7 +54,8 @@ module Alfodr
           logger.info "Server started in #{Alfodr.environment}"
           logger.info "Startup Time #{Time.now - time}".colorize(:white)
           port_reuse = !ENV["ALFODR_PROCESS_COUNT"]?.nil?
-          server.listen(port, port_reuse)
+          host = ENV["ALFODR_HOST"]? || "127.0.0.1"
+          server.listen(host, port, port_reuse)
           break
         rescue e : Errno
           if e.errno == Errno::EMFILE
