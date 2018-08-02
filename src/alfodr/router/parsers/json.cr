@@ -8,8 +8,6 @@ module Alfodr::Router::Parsers
       return json_params unless body.size > 2
       return json_params unless parsed = ::JSON.parse body
 
-      json_params["_json"] = body
-
       if parsed.as_h?
         parsed.as_h.each do |key, value|
           if value.as_s?
