@@ -41,7 +41,17 @@ module Alfodr
       logger.info "#{version.colorize(:light_cyan)} serving application on port #{port}"
       handler.prepare_pipelines
       server = HTTP::Server.new(handler)
-      server.tls = Alfodr::SSL.new(ENV["ALFODR_SSL_KEY_FILE"], ENV["ALFODR_SSL_CERT_FILE"]).generate_tls if ssl_enabled?
+      
+      
+      port_reuse = !ENV["ALFODR_PROCESS_COUNT"]?.nil?
+      host = ENV["ALFODR_HOST"]? || "127.0.0.1"
+
+      if ssl_enabled?
+        ssl_config = Alfodr::SSL.new(ENV["ALFODR_SSL_KEY_FILE"], ENV["ALFODR_SSL_CERT_FILE"]).generate_tls
+        server.bind_ssl host, port, ssl_config, port_reuse
+      else
+        server.bind_tcp host, port, port_reuse
+      end
 
       Signal::INT.trap do
         Signal::INT.reset
@@ -53,9 +63,7 @@ module Alfodr
         begin
           logger.info "Server started in #{Alfodr.environment}"
           logger.info "Startup Time #{Time.now - time}".colorize(:white)
-          port_reuse = !ENV["ALFODR_PROCESS_COUNT"]?.nil?
-          host = ENV["ALFODR_HOST"]? || "127.0.0.1"
-          server.listen(host, port, port_reuse)
+          server.listen
           break
         rescue e : Errno
           if e.errno == Errno::EMFILE
