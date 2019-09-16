@@ -48,7 +48,7 @@ module Alfodr
 
       if ssl_enabled?
         ssl_config = Alfodr::SSL.new(ENV["ALFODR_SSL_KEY_FILE"], ENV["ALFODR_SSL_CERT_FILE"]).generate_tls
-        server.bind_ssl host, port, ssl_config, port_reuse
+        server.bind_tls host, port, ssl_config, port_reuse
       else
         server.bind_tcp host, port, port_reuse
       end
