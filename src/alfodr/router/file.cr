@@ -12,7 +12,7 @@ module Alfodr::Router
 
     def initialize(upload)
       @filename = upload.filename
-      @file = ::File.tempfile.new(filename)
+      @file = ::File.tempfile(filename)
       ::File.open(@file.path, "w") do |f|
         ::IO.copy(upload.body, f)
       end
