@@ -20,6 +20,10 @@ module Alfodr
       with self yield
     end
 
+    def self.pubsub_adapter
+      instance.pubsub_adapter.instance
+    end
+
     def self.router
       instance.router
     end
