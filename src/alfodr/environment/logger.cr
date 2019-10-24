@@ -12,7 +12,7 @@ module Alfodr::Environment
 
     def log(severity, message, progname = nil, color = :light_cyan)
       return if severity < level || !@io
-      write(severity, Time.now, "#{progname || @progname} |".colorize(color).to_s, message)
+      write(severity, Time.utc, "#{progname || @progname} |".colorize(color).to_s, message)
     end
   end
 end

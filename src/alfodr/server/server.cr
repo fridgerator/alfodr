@@ -3,6 +3,8 @@ require "logger"
 module Alfodr
   class Server
     include Alfodr::DSL::Server
+    alias WebSocketAdapter = WebSockets::Adapters::RedisAdapter.class | WebSockets::Adapters::MemoryAdapter.class
+    property pubsub_adapter : WebSocketAdapter = WebSockets::Adapters::MemoryAdapter
     getter handler = Pipe::Pipeline.new
     getter router = Router::Router.new
 
@@ -37,7 +39,7 @@ module Alfodr
     end
 
     def start
-      time = Time.now
+      time = Time.utc
       logger.info "#{version.colorize(:light_cyan)} serving application on port #{port}"
       handler.prepare_pipelines
       server = HTTP::Server.new(handler)
@@ -62,7 +64,7 @@ module Alfodr
       loop do
         begin
           logger.info "Server started in #{Alfodr.environment}"
-          logger.info "Startup Time #{Time.now - time}".colorize(:white)
+          logger.info "Startup Time #{Time.utc - time}".colorize(:white)
           server.listen
           break
         rescue e : Errno

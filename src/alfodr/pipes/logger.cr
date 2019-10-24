@@ -31,10 +31,10 @@ module Alfodr
       end
 
       def call(context : HTTP::Server::Context)
-        time = Time.now
+        time = Time.utc
         call_next(context)
         status = context.response.status_code
-        elapsed = elapsed_text(Time.now - time)
+        elapsed = elapsed_text(Time.utc - time)
         request(context, time, elapsed, status, :magenta) if @context.includes? "request"
         log_other(context.request.headers, "Headers") if @context.includes? "headers"
         log_other(context.params, "Params", :light_blue) if @context.includes? "params"

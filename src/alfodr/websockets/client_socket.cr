@@ -1,3 +1,5 @@
+require "uuid"
+
 module Alfodr
   module WebSockets
     # `ClientSocket` struct maps a user to an [HTTP::WebSocket](https://crystal-lang.org/api/0.22.0/HTTP/WebSocket.html).  For every websocket connection
