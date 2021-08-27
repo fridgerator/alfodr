@@ -85,7 +85,7 @@ module Alfodr
       end
 
       private def log(msg, prog, color = :white)
-        Alfodr.logger.info msg, prog, color
+        Log.for(prog.colorize(color).to_s).debug { msg }
       end
     end
   end

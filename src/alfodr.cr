@@ -1,5 +1,5 @@
 require "http"
-require "logger"
+require "log"
 require "json"
 require "colorize"
 require "random/secure"
@@ -14,13 +14,12 @@ require "./alfodr/pipes/**"
 require "./alfodr/server/**"
 require "./alfodr/validators/**"
 require "./alfodr/websockets/**"
-require "./alfodr/environment/**"
 
 # TODO: Write documentation for `Alfodr`
 module Alfodr
-  def self.logger
-    Alfodr::Environment::Logger.new(STDOUT)
-  end
+  # def self.logger
+  #   Alfodr::Environment::Logger.new(STDOUT, nil, Log::Severity::Info  )
+  # end
 
   def self.environment
     ENV["ALFODR_ENV"]? || "development"

@@ -1,7 +1,8 @@
-require "logger"
+require "log"
 
 module Alfodr
   class Server
+    Log = ::Log.for(self)
     include Alfodr::DSL::Server
     alias WebSocketAdapter = WebSockets::Adapters::RedisAdapter.class | WebSockets::Adapters::MemoryAdapter.class
     property pubsub_adapter : WebSocketAdapter = WebSockets::Adapters::MemoryAdapter
@@ -44,7 +45,7 @@ module Alfodr
 
     def start
       time = Time.utc
-      logger.info "#{version.colorize(:light_cyan)} serving application on port #{port}"
+      Log.info { "#{version.colorize(:light_cyan)} serving application on port #{port}" }
       handler.prepare_pipelines
       server = HTTP::Server.new(handler)
       
@@ -61,25 +62,19 @@ module Alfodr
 
       Signal::INT.trap do
         Signal::INT.reset
-        logger.info "Shutting down Alfodr"
+        Log.info { "Shutting down Alfodr" }
         server.close
       end
 
       loop do
         begin
-          logger.info "Server started in #{Alfodr.environment}"
-          logger.info "Startup Time #{Time.utc - time}".colorize(:white)
+          Log.info { "Server started in #{Alfodr.environment}" }
+          Log.info { "Startup Time #{Time.utc - time}".colorize(:white) }
           server.listen
           break
-        rescue e : Errno
-          if e.errno == Errno::EMFILE
-            logger.error e.message
-            logger.info "Restarting server..."
-            sleep 1
-          else
-            logger.error e.message
-            break
-          end
+        rescue e : IO::Error
+          Log.error(exception: e) { "Restarting server..." }
+          sleep 1
         end
       end
     end
@@ -101,9 +96,9 @@ module Alfodr
       ssl_enabled? ? "https" : "http"
     end
 
-    def logger
-      Alfodr.logger
-    end
+    # def logger
+    #   Alfodr.logging
+    # end
 
     # def settings
     #   Alfodr.settings
